@@ -148,50 +148,52 @@ export function Hero() {
               />
             </div>
 
-            {/* HEADLINE — kinetic split drift, layered OVER the astronaut */}
+            {/* HEADLINE — refined: clean composition, transparent over astronaut body */}
             <div className="absolute inset-0 z-[5] pointer-events-none flex flex-col justify-center">
               <h1
-                className="font-display font-semibold tracking-[-0.045em] leading-[0.88]"
-                style={{ fontSize: "clamp(2.6rem, 10.2vw, 9.5rem)" }}
+                className="font-display font-semibold tracking-[-0.04em] leading-[0.92] max-w-[1180px] mx-auto px-2 sm:px-4"
+                style={{ fontSize: "clamp(2.2rem, 7.6vw, 7rem)" }}
               >
-                {/* Line 1 — drifts LEFT */}
+                {/* Line 1 — solid, sits above astronaut helmet area */}
                 <span
                   className="block animate-fade-up will-change-transform"
                   style={{
                     animationDelay: "60ms",
-                    transform: `translate3d(${lineLeftX}px, 0, 0)`,
-                    color: "oklch(0.99 0.01 285 / 0.95)",
+                    transform: `translate3d(${lineLeftX * 0.5}px, 0, 0)`,
+                    color: "oklch(0.99 0.01 285 / 0.96)",
                     textShadow:
-                      "0 1px 30px oklch(0.10 0.05 285 / 0.85), 0 0 70px oklch(0.55 0.22 295 / 0.35)",
+                      "0 1px 24px oklch(0.10 0.05 285 / 0.75), 0 0 60px oklch(0.55 0.22 295 / 0.28)",
                   }}
                 >
                   Your Start-up ideas
                 </span>
 
-                {/* Line 2 — drifts RIGHT, refined translucent gradient */}
+                {/* Line 2 — translucent gradient, overlaps astronaut chest */}
                 <span
-                  className="block animate-fade-up will-change-transform md:pl-[8%] lg:pl-[14%]"
+                  className="block animate-fade-up will-change-transform md:pl-[6%] lg:pl-[10%]"
                   style={{
                     animationDelay: "180ms",
-                    transform: `translate3d(${lineRightX}px, 0, 0)`,
+                    transform: `translate3d(${lineRightX * 0.5}px, 0, 0)`,
                     background:
-                      "linear-gradient(180deg, oklch(0.99 0.02 285 / 0.96) 0%, oklch(0.78 0.16 295 / 0.78) 100%)",
+                      "linear-gradient(180deg, oklch(0.99 0.02 285 / 0.55) 0%, oklch(0.78 0.16 295 / 0.45) 100%)",
                     WebkitBackgroundClip: "text",
                     backgroundClip: "text",
                     color: "transparent",
-                    filter: "drop-shadow(0 2px 24px oklch(0.10 0.05 285 / 0.7))",
+                    WebkitTextStroke: "0.5px oklch(1 0 0 / 0.35)",
+                    filter: "drop-shadow(0 2px 18px oklch(0.10 0.05 285 / 0.55))",
+                    mixBlendMode: "screen",
                   }}
                 >
                   starts with Us
                 </span>
 
-                {/* Line 3 — outlined transparent, gentle drift */}
+                {/* Line 3 — outlined, fully transparent through astronaut body */}
                 <span
-                  className="block animate-fade-up will-change-transform md:pl-[22%] lg:pl-[32%]"
+                  className="block animate-fade-up will-change-transform md:pl-[14%] lg:pl-[22%]"
                   style={{
                     animationDelay: "300ms",
                     transform: `translate3d(${lineCenterX}px, 0, 0)`,
-                    WebkitTextStroke: "1px oklch(1 0 0 / 0.7)",
+                    WebkitTextStroke: "1px oklch(1 0 0 / 0.55)",
                     color: "transparent",
                   }}
                 >
