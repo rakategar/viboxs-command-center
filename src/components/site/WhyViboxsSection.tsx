@@ -45,26 +45,49 @@ export function WhyViboxsSection() {
           subtitle="Karena project digital yang serius butuh lebih dari sekadar desain bagus. Ia butuh arah, proses, scope, dan partner yang bisa menjaga momentum."
         />
 
-        <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {blocks.map((b) => {
-            const Icon = b.icon;
-            return (
-              <article
-                key={b.title}
-                className="glass rounded-2xl p-6 hover:bg-white/[0.05] transition"
-              >
-                <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 ring-1 ring-primary/30">
-                  <Icon className="h-5 w-5 text-primary-glow" strokeWidth={1.6} />
-                </div>
-                <h3 className="mt-5 font-display text-lg font-semibold text-foreground">
-                  {b.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {b.body}
-                </p>
-              </article>
-            );
-          })}
+        <div className="mt-14 space-y-5">
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {blocks.slice(0, 3).map((b) => {
+              const Icon = b.icon;
+              return (
+                <article
+                  key={b.title}
+                  className="glass rounded-2xl p-6 hover:bg-white/[0.05] transition"
+                >
+                  <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 ring-1 ring-primary/30">
+                    <Icon className="h-5 w-5 text-primary-glow" strokeWidth={1.6} />
+                  </div>
+                  <h3 className="mt-5 font-display text-lg font-semibold text-foreground">
+                    {b.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {b.body}
+                  </p>
+                </article>
+              );
+            })}
+          </div>
+          <div className="grid gap-5 md:grid-cols-2 lg:mx-auto lg:max-w-[66%]">
+            {blocks.slice(3).map((b) => {
+              const Icon = b.icon;
+              return (
+                <article
+                  key={b.title}
+                  className="glass rounded-2xl p-6 hover:bg-white/[0.05] transition"
+                >
+                  <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 ring-1 ring-primary/30">
+                    <Icon className="h-5 w-5 text-primary-glow" strokeWidth={1.6} />
+                  </div>
+                  <h3 className="mt-5 font-display text-lg font-semibold text-foreground">
+                    {b.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {b.body}
+                  </p>
+                </article>
+              );
+            })}
+          </div>
         </div>
 
         <blockquote className="mx-auto mt-14 max-w-3xl glass-strong rounded-3xl p-8 sm:p-10 text-center">
