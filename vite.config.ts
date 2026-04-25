@@ -6,4 +6,5 @@
 // You can pass additional config via defineConfig({ vite: { ... } }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
-export default defineConfig();
+// cloudflare: false → disable Cloudflare Workers plugin so Vercel gets standard static output
+export default defineConfig({ cloudflare: false });

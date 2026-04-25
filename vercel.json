@@ -1,8 +1,10 @@
 {
+  "buildCommand": "pnpm build",
+  "outputDirectory": "dist",
   "rewrites": [
     {
-      "source": "/((?!_build/|assets/|favicon.ico|robots.txt).*)",
-      "destination": "/_shell.html"
+      "source": "/((?!assets/|_build/|favicon.ico|robots.txt).*)",
+      "destination": "/index.html"
     }
   ]
 }
