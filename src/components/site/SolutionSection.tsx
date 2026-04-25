@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Globe, Cpu, LayoutDashboard, Rocket } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { SectionHeader } from "./SectionHeader";
@@ -39,8 +40,11 @@ const solutions: {
 ];
 
 export function SolutionSection() {
+  const [active, setActive] = useState(0);
+  const ActiveIcon = solutions[active].icon;
+
   return (
-    <section className="relative py-24 sm:py-32">
+    <section className="cinematic-section relative py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader
           eyebrow="02 · WHAT VIBOXS BUILDS"
@@ -53,41 +57,62 @@ export function SolutionSection() {
           subtitle="Kami tidak hanya membuat tampilan. Kami membantu menyusun struktur digital yang lebih siap dipakai, dipercaya, dan dikembangkan."
         />
 
-        <div className="mt-14 grid gap-5 md:grid-cols-2">
-          {solutions.map((s) => {
+        <div className="mt-14 grid gap-5 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
+          <div className="grid gap-3">
+          {solutions.map((s, i) => {
             const Icon = s.icon;
             return (
-              <article
+              <button
+                type="button"
                 key={s.title}
-                className="group relative glass-strong rounded-3xl p-7 transition-all duration-500 hover:-translate-y-1 hover:bg-white/[0.05]"
+                onClick={() => setActive(i)}
+                className={`group relative rounded-2xl p-5 text-left transition-all duration-500 hover:-translate-y-0.5 ${active === i ? "glass-strong ring-1 ring-primary/35" : "glass hover:bg-white/[0.05]"}`}
               >
-                <div className="absolute -inset-px rounded-3xl bg-[var(--gradient-aurora)] opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-20 -z-10" />
                 <div className="flex items-start gap-4">
-                  <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--gradient-aurora)]/15 ring-1 ring-primary/30">
-                    <Icon className="h-6 w-6 text-primary-glow" strokeWidth={1.5} />
+                  <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 ring-1 ring-primary/30">
+                    <Icon className="h-5 w-5 text-primary-glow" strokeWidth={1.5} />
                   </div>
                   <div>
-                    <h3 className="font-display text-xl font-semibold text-foreground">
+                    <h3 className="font-display text-lg font-semibold text-foreground">
                       {s.title}
                     </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground line-clamp-2">
                       {s.description}
                     </p>
                   </div>
                 </div>
-                <div className="mt-5 flex flex-wrap gap-2 pt-5 border-t border-white/5">
-                  {s.uses.map((u) => (
-                    <span
-                      key={u}
-                      className="rounded-full bg-white/[0.04] px-3 py-1 text-[11px] font-mono tracking-wider text-muted-foreground"
-                    >
+              </button>
+            );
+          })}
+          </div>
+
+          <article className="relative min-h-[420px] overflow-hidden rounded-3xl glass-strong p-7 glow-ring">
+            <div className="absolute inset-0 grid-cosmos opacity-35" />
+            <div className="absolute right-[-12%] top-[-20%] h-80 w-80 rounded-full bg-primary/20 blur-3xl animate-pulse-glow" />
+            <div className="relative z-10 flex h-full flex-col justify-between">
+              <div>
+                <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--gradient-aurora)] shadow-[var(--shadow-glow-sm)]">
+                  <ActiveIcon className="h-7 w-7 text-primary-foreground" strokeWidth={1.5} />
+                </div>
+                <h3 className="mt-6 font-display text-3xl font-semibold text-foreground">
+                  {solutions[active].title}
+                </h3>
+                <p className="mt-3 max-w-xl text-sm sm:text-base leading-relaxed text-muted-foreground">
+                  {solutions[active].description}
+                </p>
+              </div>
+              <div className="mt-8 rounded-2xl border border-white/10 bg-background/30 p-5">
+                <div className="mb-4 font-mono text-[10px] tracking-[0.3em] text-primary-glow">MISSION STACK</div>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  {solutions[active].uses.map((u) => (
+                    <span key={u} className="rounded-full bg-white/[0.05] px-3 py-2 text-[11px] font-mono tracking-wider text-foreground/80">
                       {u}
                     </span>
                   ))}
                 </div>
-              </article>
-            );
-          })}
+              </div>
+            </div>
+          </article>
         </div>
       </div>
     </section>

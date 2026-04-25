@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { SectionHeader } from "./SectionHeader";
 import { whatsappLink } from "@/lib/contact";
@@ -70,8 +71,11 @@ const services = [
 ];
 
 export function ServicesSection() {
+  const [active, setActive] = useState(0);
+  const selected = services[active];
+
   return (
-    <section id="services" className="relative py-24 sm:py-32">
+    <section id="services" className="cinematic-section relative py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader
           eyebrow="04 · MISSION OPTIONS"
@@ -84,13 +88,17 @@ export function ServicesSection() {
           subtitle="Mulai dari premium website sampai AI automation dan custom dashboard. VIBOXS membantu memilih scope yang paling efektif, bukan yang paling ribet."
         />
 
-        <div className="mt-14 grid gap-5 md:grid-cols-2">
+        <div className="mt-14 grid gap-5 lg:grid-cols-[0.82fr_1.18fr]">
+          <div className="space-y-3">
           {services.map((s, i) => (
-            <article
+            <button
+              type="button"
               key={s.name}
-              className="group glass rounded-3xl p-7 hover:bg-white/[0.05] transition flex flex-col"
+              onClick={() => setActive(i)}
+              onMouseEnter={() => setActive(i)}
+              className={`group w-full rounded-2xl p-5 text-left transition-all duration-300 ${active === i ? "glass-strong ring-1 ring-primary/35" : "glass hover:bg-white/[0.05]"}`}
             >
-              <div className="flex items-start justify-between">
+              <div className="flex items-center justify-between gap-4">
                 <div>
                   <div className="font-mono text-[10px] tracking-[0.3em] text-primary-glow">
                     M-{String(i + 1).padStart(2, "0")}
@@ -99,29 +107,40 @@ export function ServicesSection() {
                     {s.name}
                   </h3>
                 </div>
+                <ArrowUpRight className="h-4 w-4 text-muted-foreground transition group-hover:rotate-45 group-hover:text-primary-glow" />
               </div>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground line-clamp-2">
                 {s.forWho}
               </p>
-              <ul className="mt-5 grid grid-cols-1 gap-1.5 text-sm text-foreground/85">
-                {s.includes.map((inc) => (
-                  <li key={inc} className="flex items-start gap-2">
-                    <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-primary-glow" />
+            </button>
+          ))}
+          </div>
+
+          <article className="relative overflow-hidden rounded-3xl glass-strong p-7 glow-ring">
+            <div className="absolute inset-0 grid-cosmos opacity-30" />
+            <div className="absolute -right-24 top-10 h-72 w-72 rounded-full bg-primary/20 blur-3xl" />
+            <div className="relative z-10">
+              <div className="font-mono text-[10px] tracking-[0.3em] text-primary-glow">SERVICE COMMAND CONSOLE</div>
+              <h3 className="mt-4 font-display text-3xl font-semibold text-foreground">{selected.name}</h3>
+              <p className="mt-3 max-w-2xl text-sm sm:text-base leading-relaxed text-muted-foreground">{selected.forWho}</p>
+              <div className="mt-8 grid gap-2 sm:grid-cols-2">
+                {selected.includes.map((inc) => (
+                  <span key={inc} className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-2 text-xs text-foreground/85">
                     {inc}
-                  </li>
+                  </span>
                 ))}
-              </ul>
+              </div>
               <a
-                href={whatsappLink(s.msg)}
+                href={whatsappLink(selected.msg)}
                 target="_blank"
                 rel="noreferrer"
-                className="mt-6 inline-flex w-fit items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-xs font-mono tracking-[0.18em] text-foreground hover:bg-white/5 transition"
+                className="mt-8 inline-flex w-fit items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm font-semibold text-background hover:scale-[1.02] hover:shadow-[var(--shadow-glow-sm)] transition-all"
               >
-                {s.cta}
-                <ArrowUpRight className="h-3.5 w-3.5" />
+                {selected.cta}
+                <ArrowUpRight className="h-4 w-4" />
               </a>
-            </article>
-          ))}
+            </div>
+          </article>
         </div>
       </div>
     </section>

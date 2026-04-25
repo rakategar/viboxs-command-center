@@ -90,7 +90,7 @@ const plans = [
 
 export function PricingSection() {
   return (
-    <section id="pricing" className="relative py-24 sm:py-32">
+    <section id="pricing" className="cinematic-section relative py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader
           eyebrow="05 · PRICING"
@@ -107,7 +107,7 @@ export function PricingSection() {
           const renderCard = (p: (typeof plans)[number]) => (
             <article
               key={p.name}
-              className={`relative rounded-3xl p-7 flex flex-col ${
+              className={`group relative rounded-3xl p-6 flex flex-col transition-all duration-500 hover:-translate-y-1 hover:bg-white/[0.05] ${
                 p.highlight
                   ? "glass-strong ring-1 ring-primary/40 shadow-[var(--shadow-glow-sm)]"
                   : "glass"
@@ -124,17 +124,25 @@ export function PricingSection() {
               <div className="mt-3 font-display text-2xl font-bold text-gradient">
                 {p.price}
               </div>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground line-clamp-2">
                 {p.forWho}
               </p>
               <ul className="mt-5 grid gap-1.5 text-sm text-foreground/85 flex-1">
-                {p.includes.map((inc) => (
+                {p.includes.slice(0, 4).map((inc) => (
                   <li key={inc} className="flex items-start gap-2">
                     <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-primary-glow" />
                     {inc}
                   </li>
                 ))}
               </ul>
+              <details className="mt-3 text-xs text-muted-foreground">
+                <summary className="cursor-pointer font-mono tracking-[0.18em] text-primary-glow/90">FULL SCOPE</summary>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {p.includes.slice(4).map((inc) => (
+                    <span key={inc} className="rounded-full bg-white/[0.04] px-2.5 py-1">{inc}</span>
+                  ))}
+                </div>
+              </details>
               <a
                 href={whatsappLink(p.msg)}
                 target="_blank"
@@ -162,7 +170,23 @@ export function PricingSection() {
           );
         })()}
 
-        <div className="mt-10 glass rounded-2xl p-5 sm:p-6 flex items-start gap-4">
+        <div className="mt-10 grid gap-5 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+          <div className="glass-strong rounded-3xl p-6 sm:p-7">
+            <div className="font-mono text-[10px] tracking-[0.3em] text-primary-glow">PROJECT COMPLEXITY METER</div>
+            <div className="mt-5 h-3 overflow-hidden rounded-full bg-white/[0.06]">
+              <div className="beam-scan h-full w-[78%] rounded-full bg-[linear-gradient(90deg,var(--primary),var(--primary-glow),var(--violet))] shadow-[var(--shadow-glow-sm)]" />
+            </div>
+            <div className="mt-5 flex flex-wrap gap-2">
+              {[
+                "Pages", "Design depth", "Features", "Integrations", "Automation", "AI layer", "Dashboard", "Timeline", "Support"
+              ].map((factor) => (
+                <span key={factor} className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[11px] text-foreground/80">
+                  {factor}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="glass rounded-2xl p-5 sm:p-6 flex items-start gap-4">
           <div className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/15 ring-1 ring-primary/30">
             <Info className="h-4 w-4 text-primary-glow" />
           </div>
@@ -172,6 +196,7 @@ export function PricingSection() {
             Setelah konsultasi awal, VIBOXS akan membantu merekomendasikan scope
             paling masuk akal agar project tetap efektif dan tidak membengkak.
           </p>
+          </div>
         </div>
       </div>
     </section>
