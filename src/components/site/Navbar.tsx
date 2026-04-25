@@ -1,5 +1,5 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Menu, X, MessageCircle } from "lucide-react";
 import { WHATSAPP_URL } from "@/lib/contact";
 
@@ -11,15 +11,32 @@ const links = [
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
+    const onScroll = () => {
+      const currentScrollY = window.scrollY;
+      setScrolled(currentScrollY > 24);
+      
+      if (currentScrollY > 150 && currentScrollY > lastScrollY.current) {
+        setHidden(true);
+        if (open) setOpen(false);
+      } else {
+        setHidden(false);
+      }
+      
+      lastScrollY.current = currentScrollY;
+    };
+    
+    // Set initial
+    setScrolled(window.scrollY > 24);
+    
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [open]);
 
   useEffect(() => {
     setOpen(false);
@@ -27,9 +44,9 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-in-out ${
         scrolled ? "py-2" : "py-4"
-      }`}
+      } ${hidden ? "-translate-y-[150%] opacity-0 pointer-events-none" : "translate-y-0 opacity-100"}`}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <nav
