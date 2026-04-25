@@ -57,10 +57,16 @@ export function Hero() {
     <section
       ref={sectionRef}
       id="top"
-      className="relative isolate overflow-hidden pt-28 pb-16 sm:pt-32 sm:pb-20 min-h-[100vh] scroll-mt-28"
+      className="relative isolate pt-32 pb-6 sm:pt-40 sm:pb-6 scroll-mt-28"
     >
       {/* ============ STATIC CINEMATIC BACKGROUND ============ */}
-      <div className="pointer-events-none absolute inset-0 -z-40">
+      <div 
+        className="pointer-events-none absolute inset-0 -z-40"
+        style={{
+          maskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to bottom, black 85%, transparent 100%)"
+        }}
+      >
         <img
           src={heroBg}
           alt=""
@@ -73,7 +79,7 @@ export function Hero() {
         {/* Cinematic vignette */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,oklch(0.07_0.025_285/0.6)_60%,oklch(0.05_0.025_285/0.96)_100%)]" />
         {/* Right nebula bloom — soft */}
-        <div className="absolute right-[-15%] top-[20%] h-[44rem] w-[44rem] rounded-full bg-[radial-gradient(circle_at_center,oklch(0.55_0.24_295/0.28),transparent_65%)] blur-3xl" />
+        <div className="absolute right-0 top-[20%] h-[44rem] w-[44rem] rounded-full bg-[radial-gradient(circle_at_center,oklch(0.55_0.24_295/0.28),transparent_65%)] blur-3xl" />
         {/* Top fade */}
         <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-background/95 to-transparent" />
         {/* Bottom atmospheric fog — astronaut absorbs into this */}
@@ -116,7 +122,7 @@ export function Hero() {
           </div>
 
           {/* Stage container — astronaut anchored, headline overlaps */}
-          <div className="relative h-[clamp(420px,70vh,760px)] w-full">
+          <div className="relative h-[clamp(440px,65vh,520px)] sm:h-[clamp(520px,70vh,760px)] w-full mt-4 sm:mt-0">
             {/* Soft purple aura — diffused, low intensity */}
             <div
               className="pointer-events-none absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 z-[1]"
@@ -125,15 +131,38 @@ export function Hero() {
               <div className="h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle_at_center,oklch(0.55_0.24_295/0.42),transparent_62%)] blur-3xl" />
             </div>
 
-            {/* ASTRONAUT — anchored to bottom of stage, lower body absorbed by haze */}
+            {/* ASTRONAUT — MOBILE: vertically centered so text overlaps */}
             <div
-              className="absolute left-1/2 bottom-0 pointer-events-none select-none z-[3]"
+              className="sm:hidden absolute left-1/2 top-[55%] pointer-events-none select-none z-[3]"
+              style={{
+                transform: `translate3d(-50%, calc(-50% + ${astroSink}px), 0)`,
+                willChange: "transform, opacity",
+                opacity: Math.max(0, astroOpacity),
+                filter: "drop-shadow(0 30px 70px oklch(0.35 0.22 295 / 0.65))",
+                WebkitMaskImage:
+                  "linear-gradient(to bottom, #000 0%, #000 72%, rgba(0,0,0,0.55) 88%, transparent 100%)",
+                maskImage:
+                  "linear-gradient(to bottom, #000 0%, #000 72%, rgba(0,0,0,0.55) 88%, transparent 100%)",
+              }}
+            >
+              <img
+                src={heroAstronaut}
+                alt="VIBOXS Commander astronaut in cosmic purple armor"
+                width={1100}
+                height={1100}
+                className="block w-[clamp(520px,140vw,700px)] max-w-none h-auto object-contain"
+              />
+              <div className="absolute left-[47%] top-[18%] h-20 w-28 -translate-x-1/2 rounded-full bg-primary/20 blur-2xl animate-pulse-glow" />
+            </div>
+
+            {/* ASTRONAUT — DESKTOP: anchored to bottom, sinks on scroll */}
+            <div
+              className="hidden sm:block absolute left-1/2 bottom-0 pointer-events-none select-none z-[3]"
               style={{
                 transform: `translate3d(calc(-50% - 4px), ${astroSink}px, 0)`,
                 willChange: "transform, opacity",
                 opacity: Math.max(0, astroOpacity),
                 filter: "drop-shadow(0 30px 70px oklch(0.35 0.22 295 / 0.65))",
-                // Soft atmospheric clipping at the bottom — astronaut merges into fog
                 WebkitMaskImage:
                   "linear-gradient(to bottom, #000 0%, #000 72%, rgba(0,0,0,0.55) 88%, transparent 100%)",
                 maskImage:
@@ -151,10 +180,10 @@ export function Hero() {
             </div>
 
             {/* HEADLINE — refined: clean composition, transparent over astronaut body */}
-            <div className="absolute inset-0 z-[5] pointer-events-none flex flex-col justify-center md:justify-center">
+            <div className="absolute inset-0 z-[5] pointer-events-none flex flex-col justify-center">
               <h1
-                className="font-display font-semibold tracking-[-0.025em] leading-[0.98] max-w-[980px] mx-auto px-2 sm:px-4 -translate-y-[6%]"
-                style={{ fontSize: "clamp(2rem, 5.55vw, 5.35rem)" }}
+                className="font-display font-semibold tracking-[-0.025em] leading-[0.98] max-w-[980px] mx-auto px-4 sm:px-4 -translate-y-[8%] sm:-translate-y-[6%]"
+                style={{ fontSize: "clamp(2.4rem, 12vw, 5.35rem)" }}
               >
                 {/* Line 1 — solid, sits above astronaut helmet area */}
                 <span

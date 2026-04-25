@@ -47,11 +47,10 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <main className="relative">
+    <main className="relative overflow-x-hidden">
       <CosmicBackground />
       <Navbar />
       <Hero />
-      <ProblemSection />
       <SolutionSection />
       <WhyViboxsSection />
       <ServicesSection />

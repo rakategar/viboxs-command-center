@@ -44,7 +44,7 @@ export function SolutionSection() {
   const ActiveIcon = solutions[active].icon;
 
   return (
-    <section className="cinematic-section relative py-24 sm:py-32">
+    <section className="relative pb-24 pt-6 sm:pb-32 sm:pt-6">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader
           eyebrow="02 · WHAT VIBOXS BUILDS"
