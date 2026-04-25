@@ -7,7 +7,7 @@ export function PortfolioPreview() {
   const featured = portfolioProjects.filter((p) => p.featured).slice(0, 3);
 
   return (
-    <section className="relative py-24 sm:py-32">
+    <section className="cinematic-section relative py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SectionHeader
@@ -28,13 +28,13 @@ export function PortfolioPreview() {
           </Link>
         </div>
 
-        <div className="mt-14 grid gap-5 lg:grid-cols-3">
+        <div className="mt-14 grid gap-5 lg:grid-cols-5">
           {featured.map((p, i) => (
             <article
               key={p.id}
-              className="group relative glass-strong overflow-hidden rounded-3xl glow-ring transition-all duration-500 hover:-translate-y-1"
+              className={`group relative glass-strong overflow-hidden rounded-3xl glow-ring transition-all duration-500 hover:-translate-y-1 ${i === 0 ? "lg:col-span-3" : "lg:col-span-2"}`}
             >
-              <div className="relative overflow-hidden aspect-[16/10]">
+              <div className={`relative overflow-hidden ${i === 0 ? "aspect-[16/9]" : "aspect-[16/10]"}`}>
                 <img
                   src={p.image}
                   alt={p.title}
@@ -59,7 +59,7 @@ export function PortfolioPreview() {
                 <p className="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-2">
                   {p.shortDescription}
                 </p>
-                <div className="mt-4 space-y-2 text-xs text-foreground/80">
+                <div className="mt-4 grid gap-2 text-xs text-foreground/80">
                   <div>
                     <span className="font-mono text-[10px] tracking-[0.2em] text-primary-glow">
                       CHALLENGE ·{" "}
@@ -67,6 +67,14 @@ export function PortfolioPreview() {
                     <span className="text-muted-foreground">
                       {p.challenge.slice(0, 90)}
                       {p.challenge.length > 90 ? "…" : ""}
+                    </span>
+                  </div>
+                  <div className="hidden sm:block">
+                    <span className="font-mono text-[10px] tracking-[0.2em] text-primary-glow">
+                      SOLUTION ·{" "}
+                    </span>
+                    <span className="text-muted-foreground">
+                      {p.solution.slice(0, 96)}{p.solution.length > 96 ? "…" : ""}
                     </span>
                   </div>
                 </div>
