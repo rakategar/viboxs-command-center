@@ -1,10 +1,10 @@
 {
   "buildCommand": "pnpm build",
-  "outputDirectory": "dist",
+  "outputDirectory": "dist/client",
   "rewrites": [
     {
       "source": "/((?!assets/|_build/|favicon.ico|robots.txt).*)",
-      "destination": "/index.html"
+      "destination": "/_shell.html"
     }
   ]
 }
