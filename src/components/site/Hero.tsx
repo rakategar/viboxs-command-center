@@ -116,7 +116,7 @@ export function Hero() {
           </div>
 
           {/* Stage container — astronaut anchored, headline overlaps */}
-          <div className="relative h-[clamp(500px,72vh,760px)] w-full">
+          <div className="relative h-[clamp(420px,70vh,760px)] w-full">
             {/* Soft purple aura — diffused, low intensity */}
             <div
               className="pointer-events-none absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 z-[1]"
@@ -127,7 +127,7 @@ export function Hero() {
 
             {/* ASTRONAUT — anchored to bottom of stage, lower body absorbed by haze */}
             <div
-              className="absolute left-1/2 bottom-0 pointer-events-none select-none z-[3] animate-float-slow"
+              className="absolute left-1/2 bottom-0 pointer-events-none select-none z-[3]"
               style={{
                 transform: `translate3d(calc(-50% - 4px), ${astroSink}px, 0)`,
                 willChange: "transform, opacity",
