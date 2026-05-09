@@ -1,4 +1,5 @@
 import { SectionHeader } from "./SectionHeader";
+import { useStaggerReveal } from "@/hooks/useReveal";
 import testimonial1 from "@/assets/testimonial-1.jpg";
 import testimonial2 from "@/assets/testimonial-2.jpg";
 import testimonial3 from "@/assets/testimonial-3.jpg";
@@ -35,6 +36,9 @@ const testimonials = [
 ];
 
 export function TrustSection() {
+  const metricsRef = useStaggerReveal<HTMLDivElement>();
+  const testimonialsRef = useStaggerReveal<HTMLDivElement>();
+
   return (
     <section className="cinematic-section relative py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -48,9 +52,9 @@ export function TrustSection() {
           }
         />
 
-        <div className="mt-12 grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-4">
+        <div ref={metricsRef} className="mt-12 grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-4 stagger-reveal">
           {metrics.map((m) => (
-            <div key={m.label} className="glass rounded-2xl p-5 sm:p-6 transition-all duration-500 hover:-translate-y-1 hover:bg-white/[0.05]">
+            <div key={m.label} className="glass rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-white/[0.05]">
               <div className="font-display text-3xl sm:text-4xl font-bold text-gradient">
                 {m.value}
               </div>
@@ -61,14 +65,14 @@ export function TrustSection() {
           ))}
         </div>
 
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
+        <div ref={testimonialsRef} className="mt-10 grid gap-5 md:grid-cols-3 stagger-reveal">
           {testimonials.map((t) => (
             <blockquote
               key={t.name + t.quote.slice(0, 10)}
-              className="group glass-strong rounded-2xl p-6 flex flex-col justify-between transition-all duration-500 hover:-translate-y-1 hover:bg-white/[0.05]"
+              className="group glass-strong rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:bg-white/[0.05]"
             >
               <p className="text-sm leading-relaxed text-foreground/90">
-                “{t.quote}”
+                "{t.quote}"
               </p>
               <footer className="mt-5 pt-4 border-t border-white/5 flex items-center gap-3">
                 <img
@@ -77,7 +81,7 @@ export function TrustSection() {
                   loading="lazy"
                   width={96}
                   height={96}
-                  className="h-14 w-14 rounded-2xl object-cover ring-1 ring-white/10 shadow-[0_4px_20px_oklch(0.35_0.22_295/0.25)] transition group-hover:shadow-[var(--shadow-glow-sm)]"
+                  className="h-14 w-14 rounded-2xl object-cover ring-1 ring-white/10 shadow-[0_4px_20px_oklch(0.35_0.22_295/0.25)] transition-shadow duration-300 group-hover:shadow-[var(--shadow-glow-sm)]"
                 />
                 <div>
                   <div className="font-display text-sm font-semibold text-foreground">

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { characters } from "@/data/characters";
+import { useReveal } from "@/hooks/useReveal";
 
 const wrapIndex = (index: number) => (index + characters.length) % characters.length;
 
@@ -8,6 +9,7 @@ export function CharacterCarousel3D() {
   const [active, setActive] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const current = characters[active];
+  const sectionRef = useReveal<HTMLElement>();
 
   const visible = useMemo(
     () => [wrapIndex(active - 1), active, wrapIndex(active + 1)],
@@ -24,7 +26,7 @@ export function CharacterCarousel3D() {
   }, []);
 
   return (
-    <section className="cinematic-section relative py-20 sm:py-28">
+    <section ref={sectionRef} className="cinematic-section relative py-20 sm:py-28 reveal">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
@@ -40,7 +42,7 @@ export function CharacterCarousel3D() {
               type="button"
               aria-label="Previous character"
               onClick={() => setActive((i) => wrapIndex(i - 1))}
-              className="flex h-11 w-11 items-center justify-center rounded-full glass transition hover:bg-white/10"
+              className="flex h-11 w-11 items-center justify-center rounded-full glass transition hover:bg-white/10 active:scale-95"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
@@ -48,7 +50,7 @@ export function CharacterCarousel3D() {
               type="button"
               aria-label="Next character"
               onClick={() => setActive((i) => wrapIndex(i + 1))}
-              className="flex h-11 w-11 items-center justify-center rounded-full glass transition hover:bg-white/10"
+              className="flex h-11 w-11 items-center justify-center rounded-full glass transition hover:bg-white/10 active:scale-95"
             >
               <ChevronRight className="h-5 w-5" />
             </button>
@@ -100,7 +102,8 @@ export function CharacterCarousel3D() {
 
           <aside className={`relative overflow-hidden rounded-3xl glass-strong p-6 sm:p-8 ${current.accentClass}`}>
             <div className="absolute right-0 top-0 h-40 w-40 translate-x-1/3 -translate-y-1/3 rounded-full bg-[color-mix(in_oklab,var(--character-accent)_24%,transparent)] blur-2xl" />
-            <div className="relative">
+            {/* key triggers re-mount → replays panel-swap animation on character change */}
+            <div key={current.id} className="relative panel-swap">
               <div className="font-mono text-[11px] tracking-[0.3em] text-primary-glow">
                 {current.code}
               </div>
@@ -127,7 +130,7 @@ export function CharacterCarousel3D() {
                     type="button"
                     aria-label={`Show ${character.name}`}
                     onClick={() => setActive(index)}
-                    className={`h-1.5 rounded-full transition-all ${index === active ? "w-9 bg-foreground" : "w-3 bg-white/20 hover:bg-white/45"}`}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${index === active ? "w-9 bg-foreground" : "w-3 bg-white/20 hover:bg-white/45"}`}
                   />
                 ))}
               </div>

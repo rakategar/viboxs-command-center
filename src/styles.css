@@ -56,6 +56,8 @@
   --animate-drift: drift 30s linear infinite;
   --animate-shimmer: shimmer 8s linear infinite;
   --animate-fade-up: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-reveal-up: reveal-up 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-scale-in: scale-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 
   @keyframes float {
     0%, 100% { transform: translateY(0) translateX(0); }
@@ -76,6 +78,14 @@
   @keyframes fade-up {
     from { opacity: 0; transform: translateY(28px); }
     to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes reveal-up {
+    from { opacity: 0; transform: translateY(22px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scale-in {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
   }
 }
 
@@ -221,6 +231,28 @@
     transform: translateY(0);
   }
 
+  /* Stagger reveal — children animate in sequence when container gets .stagger-visible */
+  .stagger-reveal > * {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .stagger-reveal.stagger-visible > *:nth-child(1)  { opacity: 1; transform: none; transition-delay: 0ms; }
+  .stagger-reveal.stagger-visible > *:nth-child(2)  { opacity: 1; transform: none; transition-delay: 55ms; }
+  .stagger-reveal.stagger-visible > *:nth-child(3)  { opacity: 1; transform: none; transition-delay: 110ms; }
+  .stagger-reveal.stagger-visible > *:nth-child(4)  { opacity: 1; transform: none; transition-delay: 165ms; }
+  .stagger-reveal.stagger-visible > *:nth-child(5)  { opacity: 1; transform: none; transition-delay: 220ms; }
+  .stagger-reveal.stagger-visible > *:nth-child(6)  { opacity: 1; transform: none; transition-delay: 275ms; }
+  .stagger-reveal.stagger-visible > *:nth-child(7)  { opacity: 1; transform: none; transition-delay: 330ms; }
+  .stagger-reveal.stagger-visible > *:nth-child(8)  { opacity: 1; transform: none; transition-delay: 385ms; }
+
+  /* Panel content swap — fade-up on interactive panel content change */
+  .panel-swap {
+    animation: reveal-up 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
   section[id] {
     scroll-margin-top: 112px;
   }
@@ -300,6 +332,16 @@
       animation-iteration-count: 1 !important;
       scroll-behavior: auto !important;
       transition-duration: 0.01ms !important;
+    }
+    .stagger-reveal > * {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+    .reveal {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
     }
   }
 }

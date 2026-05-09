@@ -8,7 +8,12 @@ import { WHATSAPP_URL } from "@/lib/contact";
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const [progress, setProgress] = useState(0);
-  const [drift, setDrift] = useState(0);
+  const progressRef = useRef(0);
+  const lineRefs = useRef<(HTMLSpanElement | null)[]>([null, null, null, null]);
+
+  useEffect(() => {
+    progressRef.current = progress;
+  }, [progress]);
 
   // Scroll-driven progress (0 → 1) for parallax + sinking astronaut
   useEffect(() => {
@@ -32,24 +37,26 @@ export function Hero() {
     };
   }, []);
 
-  // Continuous, very subtle lateral drift for kinetic split-typography
+  // Continuous drift — direct DOM updates, zero React re-renders
   useEffect(() => {
     let raf = 0;
     const start = performance.now();
     const tick = (now: number) => {
       const t = (now - start) / 1000;
-      setDrift(Math.sin(t * 0.3) * 14); // gentle, controlled
+      const d = Math.sin(t * 0.3) * 14;
+      const prog = progressRef.current;
+      const [r0, r1, r2, r3] = lineRefs.current;
+      if (r0) r0.style.transform = `translate3d(${(-prog * 140 + d) * 0.5}px, 0, 0)`;
+      if (r1) r1.style.transform = `translate3d(${(prog * 140 - d) * 0.5}px, 0, 0)`;
+      if (r2) r2.style.transform = `translate3d(${d * 0.5}px, 0, 0)`;
+      if (r3) r3.style.transform = `translate3d(${-d * 1.1}px, 0, 0)`;
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
   }, []);
 
-  // Parallax derivations — astronaut stays anchored, only sinks downward
-  const lineLeftX = -progress * 140 + drift;
-  const lineRightX = progress * 140 - drift;
-  const lineCenterX = drift * 0.5;
-  const astroSink = progress * 220; // sinks into lower haze
+  const astroSink = progress * 220;
   const astroOpacity = 1 - Math.max(0, progress - 0.55) * 2.0;
   const cardsY = -progress * 30;
 
@@ -60,7 +67,7 @@ export function Hero() {
       className="relative isolate pt-32 pb-6 sm:pt-40 sm:pb-6 scroll-mt-28"
     >
       {/* ============ STATIC CINEMATIC BACKGROUND ============ */}
-      <div 
+      <div
         className="pointer-events-none absolute inset-0 -z-40"
         style={{
           maskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
@@ -78,11 +85,11 @@ export function Hero() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_60%_40%,oklch(0.32_0.18_295/0.35)_0%,transparent_55%)]" />
         {/* Cinematic vignette */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,oklch(0.07_0.025_285/0.6)_60%,oklch(0.05_0.025_285/0.96)_100%)]" />
-        {/* Right nebula bloom — soft */}
+        {/* Right nebula bloom */}
         <div className="absolute right-0 top-[20%] h-[44rem] w-[44rem] rounded-full bg-[radial-gradient(circle_at_center,oklch(0.55_0.24_295/0.28),transparent_65%)] blur-3xl" />
         {/* Top fade */}
         <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-background/95 to-transparent" />
-        {/* Bottom atmospheric fog — astronaut absorbs into this */}
+        {/* Bottom atmospheric fog */}
         <div className="absolute inset-x-0 bottom-0 h-[30rem] bg-gradient-to-t from-background via-background/85 via-30% to-transparent" />
         {/* Subtle grain */}
         <div className="absolute inset-0 opacity-[0.04] mix-blend-overlay [background-image:radial-gradient(oklch(1_0_0)_1px,transparent_1px)] [background-size:3px_3px]" />
@@ -109,12 +116,12 @@ export function Hero() {
             className="pointer-events-none absolute inset-x-0 top-[55%] -translate-y-1/2 z-0 flex justify-center select-none"
           >
             <span
+              ref={(el) => { lineRefs.current[3] = el; }}
               className="font-display font-black tracking-[-0.06em] leading-none whitespace-nowrap"
               style={{
                 fontSize: "clamp(8rem, 26vw, 24rem)",
                 WebkitTextStroke: "1px oklch(1 0 0 / 0.045)",
                 color: "transparent",
-                transform: `translate3d(${-drift * 1.1}px, 0, 0)`,
               }}
             >
               Today.
@@ -131,7 +138,7 @@ export function Hero() {
               <div className="h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle_at_center,oklch(0.55_0.24_295/0.42),transparent_62%)] blur-3xl" />
             </div>
 
-            {/* ASTRONAUT — MOBILE: vertically centered so text overlaps */}
+            {/* ASTRONAUT — MOBILE */}
             <div
               className="sm:hidden absolute left-1/2 top-[55%] pointer-events-none select-none z-[3]"
               style={{
@@ -139,10 +146,8 @@ export function Hero() {
                 willChange: "transform, opacity",
                 opacity: Math.max(0, astroOpacity),
                 filter: "drop-shadow(0 30px 70px oklch(0.35 0.22 295 / 0.65))",
-                WebkitMaskImage:
-                  "linear-gradient(to bottom, #000 0%, #000 72%, rgba(0,0,0,0.55) 88%, transparent 100%)",
-                maskImage:
-                  "linear-gradient(to bottom, #000 0%, #000 72%, rgba(0,0,0,0.55) 88%, transparent 100%)",
+                WebkitMaskImage: "linear-gradient(to bottom, #000 0%, #000 72%, rgba(0,0,0,0.55) 88%, transparent 100%)",
+                maskImage: "linear-gradient(to bottom, #000 0%, #000 72%, rgba(0,0,0,0.55) 88%, transparent 100%)",
               }}
             >
               <img
@@ -155,7 +160,7 @@ export function Hero() {
               <div className="absolute left-[47%] top-[18%] h-20 w-28 -translate-x-1/2 rounded-full bg-primary/20 blur-2xl animate-pulse-glow" />
             </div>
 
-            {/* ASTRONAUT — DESKTOP: anchored to bottom, sinks on scroll */}
+            {/* ASTRONAUT — DESKTOP */}
             <div
               className="hidden sm:block absolute left-1/2 bottom-0 pointer-events-none select-none z-[3]"
               style={{
@@ -163,10 +168,8 @@ export function Hero() {
                 willChange: "transform, opacity",
                 opacity: Math.max(0, astroOpacity),
                 filter: "drop-shadow(0 30px 70px oklch(0.35 0.22 295 / 0.65))",
-                WebkitMaskImage:
-                  "linear-gradient(to bottom, #000 0%, #000 72%, rgba(0,0,0,0.55) 88%, transparent 100%)",
-                maskImage:
-                  "linear-gradient(to bottom, #000 0%, #000 72%, rgba(0,0,0,0.55) 88%, transparent 100%)",
+                WebkitMaskImage: "linear-gradient(to bottom, #000 0%, #000 72%, rgba(0,0,0,0.55) 88%, transparent 100%)",
+                maskImage: "linear-gradient(to bottom, #000 0%, #000 72%, rgba(0,0,0,0.55) 88%, transparent 100%)",
               }}
             >
               <img
@@ -179,7 +182,7 @@ export function Hero() {
               <div className="absolute left-[47%] top-[18%] h-20 w-28 -translate-x-1/2 rounded-full bg-primary/20 blur-2xl animate-pulse-glow" />
             </div>
 
-            {/* HEADLINE — refined: clean composition, transparent over astronaut body */}
+            {/* HEADLINE */}
             <div className="absolute inset-0 z-[5] pointer-events-none flex flex-col justify-center">
               <h1
                 className="font-display font-semibold tracking-[-0.025em] leading-[0.98] max-w-[980px] mx-auto px-4 sm:px-4 -translate-y-[8%] sm:-translate-y-[6%]"
@@ -187,13 +190,12 @@ export function Hero() {
               >
                 {/* Line 1 — solid, sits above astronaut helmet area */}
                 <span
+                  ref={(el) => { lineRefs.current[0] = el; }}
                   className="block animate-fade-up will-change-transform"
                   style={{
                     animationDelay: "60ms",
-                    transform: `translate3d(${lineLeftX * 0.5}px, 0, 0)`,
                     color: "oklch(0.99 0.01 285 / 0.92)",
-                    textShadow:
-                      "0 1px 24px oklch(0.10 0.05 285 / 0.75), 0 0 60px oklch(0.55 0.22 295 / 0.28)",
+                    textShadow: "0 1px 24px oklch(0.10 0.05 285 / 0.75), 0 0 60px oklch(0.55 0.22 295 / 0.28)",
                   }}
                 >
                   Your Start-up ideas
@@ -201,12 +203,11 @@ export function Hero() {
 
                 {/* Line 2 — translucent gradient, overlaps astronaut chest */}
                 <span
+                  ref={(el) => { lineRefs.current[1] = el; }}
                   className="block animate-fade-up will-change-transform md:pl-[6%] lg:pl-[10%]"
                   style={{
                     animationDelay: "180ms",
-                    transform: `translate3d(${lineRightX * 0.5}px, 0, 0)`,
-                    background:
-                      "linear-gradient(180deg, oklch(0.99 0.02 285 / 0.48) 0%, oklch(0.78 0.16 295 / 0.34) 100%)",
+                    background: "linear-gradient(180deg, oklch(0.99 0.02 285 / 0.48) 0%, oklch(0.78 0.16 295 / 0.34) 100%)",
                     WebkitBackgroundClip: "text",
                     backgroundClip: "text",
                     color: "transparent",
@@ -220,10 +221,10 @@ export function Hero() {
 
                 {/* Line 3 — outlined, fully transparent through astronaut body */}
                 <span
+                  ref={(el) => { lineRefs.current[2] = el; }}
                   className="block animate-fade-up will-change-transform md:pl-[14%] lg:pl-[22%]"
                   style={{
                     animationDelay: "300ms",
-                    transform: `translate3d(${lineCenterX}px, 0, 0)`,
                     WebkitTextStroke: "1px oklch(1 0 0 / 0.48)",
                     color: "transparent",
                   }}
@@ -280,7 +281,7 @@ export function Hero() {
               href={WHATSAPP_URL}
               target="_blank"
               rel="noreferrer"
-              className="group inline-flex items-center justify-between gap-3 rounded-full bg-foreground px-6 py-4 text-sm font-semibold text-background transition-all hover:scale-[1.02] hover:shadow-[var(--shadow-glow)]"
+              className="group inline-flex items-center justify-between gap-3 rounded-full bg-foreground px-6 py-4 text-sm font-semibold text-background transition-all hover:scale-[1.02] hover:shadow-[var(--shadow-glow)] active:scale-[0.98]"
             >
               <span className="inline-flex items-center gap-2">
                 <Sparkles className="h-4 w-4" />
@@ -292,7 +293,7 @@ export function Hero() {
             </a>
             <Link
               to="/portfolio"
-              className="group inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-6 py-4 text-sm font-semibold text-foreground transition-all hover:bg-white/[0.08]"
+              className="group inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-6 py-4 text-sm font-semibold text-foreground transition-all hover:bg-white/[0.08] active:scale-[0.98]"
             >
               Lihat Portfolio
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -324,7 +325,7 @@ export function Hero() {
           className="relative z-[6] mt-10 grid gap-5 md:grid-cols-2"
           style={{ transform: `translate3d(0, ${cardsY * 1.4}px, 0)` }}
         >
-          <div className="glass rounded-2xl p-5 hover:bg-white/[0.04] transition">
+          <div className="glass rounded-2xl p-5 hover:bg-white/[0.04] transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.99]">
             <div className="flex items-center gap-2 mb-2">
               <Globe className="h-4 w-4 text-primary-glow" />
               <span className="font-display text-base font-semibold text-foreground">
@@ -337,7 +338,7 @@ export function Hero() {
             </p>
           </div>
 
-          <div className="glass rounded-2xl p-5 hover:bg-white/[0.04] transition">
+          <div className="glass rounded-2xl p-5 hover:bg-white/[0.04] transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.99]">
             <div className="flex items-center gap-2 mb-2">
               <Cpu className="h-4 w-4 text-primary-glow" />
               <span className="font-display text-base font-semibold text-foreground">

@@ -1,12 +1,15 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, MessageCircle } from "lucide-react";
 import { WHATSAPP_URL } from "@/lib/contact";
+import { useReveal } from "@/hooks/useReveal";
 
 export function FinalCTA() {
+  const cardRef = useReveal<HTMLDivElement>();
+
   return (
     <section id="contact" className="cinematic-section relative py-24 sm:py-32">
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
-        <div className="relative glass-strong rounded-[2rem] overflow-hidden p-8 sm:p-14 text-center">
+        <div ref={cardRef} className="reveal relative glass-strong rounded-[2rem] overflow-hidden p-8 sm:p-14 text-center">
           {/* aura */}
           <div className="pointer-events-none absolute inset-0 -z-10">
             <div className="absolute left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,oklch(0.55_0.24_295/0.4),transparent_60%)] blur-3xl" />
@@ -31,7 +34,7 @@ export function FinalCTA() {
               href={WHATSAPP_URL}
               target="_blank"
               rel="noreferrer"
-              className="group inline-flex items-center gap-3 rounded-full bg-foreground px-6 py-4 text-sm font-semibold text-background hover:scale-[1.02] hover:shadow-[var(--shadow-glow)] transition-all animate-pulse-glow"
+              className="group inline-flex items-center gap-3 rounded-full bg-foreground px-6 py-4 text-sm font-semibold text-background hover:scale-[1.02] hover:shadow-[var(--shadow-glow)] active:scale-[0.98] transition-all"
             >
               <MessageCircle className="h-4 w-4" />
               Konsultasi dengan Commander via WhatsApp
@@ -39,7 +42,7 @@ export function FinalCTA() {
             </a>
             <Link
               to="/portfolio"
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-6 py-4 text-sm font-semibold text-foreground hover:bg-white/[0.08] transition"
+              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-6 py-4 text-sm font-semibold text-foreground hover:bg-white/[0.08] active:scale-[0.98] transition-all"
             >
               Lihat Portfolio Project
               <ArrowUpRight className="h-4 w-4" />

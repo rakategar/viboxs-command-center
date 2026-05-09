@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Globe, Cpu, LayoutDashboard, Rocket } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { SectionHeader } from "./SectionHeader";
+import { useStaggerReveal } from "@/hooks/useReveal";
 
 const solutions: {
   icon: LucideIcon;
@@ -42,6 +43,7 @@ const solutions: {
 export function SolutionSection() {
   const [active, setActive] = useState(0);
   const ActiveIcon = solutions[active].icon;
+  const listRef = useStaggerReveal<HTMLDivElement>();
 
   return (
     <section className="relative pb-24 pt-6 sm:pb-32 sm:pt-6">
@@ -58,38 +60,41 @@ export function SolutionSection() {
         />
 
         <div className="mt-14 grid gap-5 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
-          <div className="grid gap-3">
-          {solutions.map((s, i) => {
-            const Icon = s.icon;
-            return (
-              <button
-                type="button"
-                key={s.title}
-                onClick={() => setActive(i)}
-                className={`group relative rounded-2xl p-5 text-left transition-all duration-500 hover:-translate-y-0.5 ${active === i ? "glass-strong ring-1 ring-primary/35" : "glass hover:bg-white/[0.05]"}`}
-              >
-                <div className="flex items-start gap-4">
-                  <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 ring-1 ring-primary/30">
-                    <Icon className="h-5 w-5 text-primary-glow" strokeWidth={1.5} />
+          <div ref={listRef} className="grid gap-3 stagger-reveal">
+            {solutions.map((s, i) => {
+              const Icon = s.icon;
+              return (
+                <button
+                  type="button"
+                  key={s.title}
+                  onClick={() => setActive(i)}
+                  className={`group relative rounded-2xl p-5 text-left transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.99] ${
+                    active === i ? "glass-strong ring-1 ring-primary/35" : "glass hover:bg-white/[0.05]"
+                  }`}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 ring-1 ring-primary/30">
+                      <Icon className="h-5 w-5 text-primary-glow" strokeWidth={1.5} />
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground">
+                        {s.title}
+                      </h3>
+                      <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground line-clamp-2">
+                        {s.description}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-display text-lg font-semibold text-foreground">
-                      {s.title}
-                    </h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground line-clamp-2">
-                      {s.description}
-                    </p>
-                  </div>
-                </div>
-              </button>
-            );
-          })}
+                </button>
+              );
+            })}
           </div>
 
           <article className="relative min-h-[420px] overflow-hidden rounded-3xl glass-strong p-7 glow-ring">
             <div className="absolute inset-0 grid-cosmos opacity-35" />
             <div className="absolute right-[-12%] top-[-20%] h-80 w-80 rounded-full bg-primary/20 blur-3xl animate-pulse-glow" />
-            <div className="relative z-10 flex h-full flex-col justify-between">
+            {/* key triggers re-mount → replays panel-swap on selection change */}
+            <div key={active} className="relative z-10 flex h-full flex-col justify-between panel-swap">
               <div>
                 <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--gradient-aurora)] shadow-[var(--shadow-glow-sm)]">
                   <ActiveIcon className="h-7 w-7 text-primary-foreground" strokeWidth={1.5} />

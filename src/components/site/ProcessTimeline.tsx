@@ -1,4 +1,5 @@
 import { SectionHeader } from "./SectionHeader";
+import { useStaggerReveal } from "@/hooks/useReveal";
 
 const steps = [
   {
@@ -39,6 +40,8 @@ const steps = [
 ];
 
 export function ProcessTimeline() {
+  const listRef = useStaggerReveal<HTMLOListElement>();
+
   return (
     <section id="process" className="cinematic-section relative py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -53,14 +56,14 @@ export function ProcessTimeline() {
           subtitle="Proses VIBOXS dibuat agar founder merasa aman: kebutuhan dipahami, scope dikunci, progress jelas, revisi terkendali, dan hasil siap diluncurkan."
         />
 
-        <ol className="mt-14 relative grid gap-4 lg:grid-cols-7 lg:gap-3">
+        <ol ref={listRef} className="mt-14 relative grid gap-4 lg:grid-cols-7 lg:gap-3 stagger-reveal">
           <div className="absolute left-5 sm:left-7 top-2 bottom-2 w-px bg-gradient-to-b from-primary/40 via-white/10 to-transparent lg:left-0 lg:right-0 lg:top-7 lg:bottom-auto lg:h-px lg:w-auto lg:bg-gradient-to-r" />
           {steps.map((s, i) => (
             <li
               key={s.title}
-              className="group relative grid grid-cols-[auto_1fr] gap-5 items-start glass rounded-2xl p-5 sm:p-6 ml-0 transition-all duration-500 hover:-translate-y-1 hover:bg-white/[0.05] lg:block lg:min-h-[280px]"
+              className="group relative grid grid-cols-[auto_1fr] gap-5 items-start glass rounded-2xl p-5 sm:p-6 ml-0 transition-all duration-300 hover:-translate-y-1 hover:bg-white/[0.05] lg:block lg:min-h-[280px]"
             >
-              <div className="flex h-10 w-10 sm:h-14 sm:w-14 items-center justify-center rounded-2xl bg-[var(--gradient-aurora)] text-primary-foreground font-display font-bold text-base sm:text-lg shadow-[var(--shadow-glow-sm)] transition group-hover:scale-105">
+              <div className="flex h-10 w-10 sm:h-14 sm:w-14 items-center justify-center rounded-2xl bg-[var(--gradient-aurora)] text-primary-foreground font-display font-bold text-base sm:text-lg shadow-[var(--shadow-glow-sm)] transition-transform duration-300 group-hover:scale-105">
                 {String(i + 1).padStart(2, "0")}
               </div>
               <div className="lg:mt-5">
